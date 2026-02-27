@@ -1,16 +1,97 @@
-# React + Vite
+# Portfolio Personal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio web moderno y responsivo desarrollado con React y Vite, showcasing proyectos y habilidades técnicas.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Diseño Moderno**: Interfaz limpia y minimalista con animaciones sutiles
+- **Responsive Design**: Optimizado para todos los dispositivos
+- **Animaciones Fluidas**: Efectos visuales atractivos con estrellas y meteoritos
+- **Rendimiento Optimizado**: Build rápido con Vite y React
+- **Código Limpio**: Seguimiento de mejores prácticas y ESLint
 
-## React Compiler
+## Stack Tecnológico
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React 18
+- **Build Tool**: Vite
+- **Estilos**: TailwindCSS
+- **Linter**: ESLint
+- **Animaciones**: CSS3 + React Hooks
 
-## Expanding the ESLint configuration
+## Estructura del Proyecto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── StarBackground.jsx  # Fondo animado con estrellas
+│   └── ...              # Más componentes en desarrollo
+├── pages/              # Páginas principales
+│   ├── Home.jsx        # Página principal
+│   └── ...              # Más páginas en desarrollo
+├── App.jsx             # Componente principal
+└── main.jsx            # Punto de entrada
+```
+
+## Componentes Principales
+
+### StarBackground
+
+Componente que genera un fondo animado con:
+
+- Estrellas parpadeantes con posición y tamaño aleatorio
+- Meteoritos con animaciones diagonales
+- Responsive al tamaño de pantalla
+- Optimizado para rendimiento
+
+## Instalación y Uso
+
+```bash
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+
+# Build para producción
+npm run build
+
+# Previsualizar build
+npm run preview
+```
+
+## Secciones del Portfolio (En Desarrollo)
+
+- [ ] **Home**: Presentación principal
+- [ ] **About Me**: Información personal
+- [ ] **Projects**: Showcase de proyectos
+- [ ] **Skills**: Habilidades técnicas
+- [ ] **Experience**: Experiencia laboral
+- [ ] **Contact**: Formulario de contacto
+
+## Características Visuales
+
+- **Fondo Dinámico**: Animación de estrellas y meteoritos
+- **Diseño Minimalista**: Enfoque en el contenido
+- **Transiciones Suaves**: Animaciones CSS optimizadas
+- **Tema Oscuro**: Diseño elegante y moderno
+
+## Configuración
+
+### Personalización
+
+- Modificar colores en `src/index.css`
+- Ajustar animaciones en componentes individuales
+- Configurar TailwindCSS en `tailwind.config.js`
+
+## Licencia
+
+Este proyecto es de código abierto. Ver archivo LICENSE para más detalles.
+
+## Autor
+
+**[Daniel Sánchez Vázquez]**
+
+---
+
+**Última actualización**: Febrero 2026
+**Versión**: 1.0.0
