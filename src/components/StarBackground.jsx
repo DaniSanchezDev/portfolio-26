@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const StarBackground = () => {
+  const [stars, setStars] = useState([]);
+  const [meteors, setMeteors] = useState([]);
+
   const generateStars = () => {
     const numberOfStars = Math.floor(
       (window.innerWidth * window.innerHeight) / 10000,
@@ -19,14 +22,11 @@ const StarBackground = () => {
       });
     }
 
-    return newStars;
+    setStars(newStars);
   };
 
   const generateMeteors = () => {
-    const numberOfMeteors = Math.floor(
-      (window.innerWidth * window.innerHeight) / 50000,
-    );
-
+    const numberOfMeteors = 4;
     const newMeteors = [];
 
     for (let i = 0; i < numberOfMeteors; i++) {
@@ -34,17 +34,34 @@ const StarBackground = () => {
         id: `meteor-${i}`,
         size: Math.random() * 2 + 0.5,
         x: Math.random() * 120 - 20,
-        y: Math.random() * 100 - 20,
-        animationDuration: Math.random() * 3 + 1,
-        delay: Math.random() * 5,
+        y: Math.random() * 50 - 30,
+        animationDuration: Math.random() * 4 + 7,
+        delay: Math.random() * 3,
       });
     }
 
-    return newMeteors;
+    setMeteors(newMeteors);
   };
 
-  const [stars] = useState(() => generateStars());
-  const [meteors] = useState(() => generateMeteors());
+  useEffect(() => {
+    setTimeout(() => {
+      generateStars();
+    }, 1000);
+    setTimeout(() => {
+      generateMeteors();
+    }, 1000);
+
+    const handleResize = () => {
+      generateStars();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       {stars.map((star) => (
@@ -66,13 +83,14 @@ const StarBackground = () => {
           key={meteor.id}
           className="meteor absolute bg-white rounded-full"
           style={{
-            width: `${meteor.size}px`,
-            height: `${meteor.size * 4}px`,
+            width: `${meteor.size * 50}px`,
+            height: `${meteor.size}px`,
             left: `${meteor.x}%`,
             top: `${meteor.y}%`,
-            opacity: meteor.opacity,
+            animationDelay: `${meteor.delay}s`,
+            animationDuration: `${meteor.animationDuration}s`,
             animation: `meteor ${meteor.animationDuration}s linear ${meteor.delay}s infinite`,
-            transform: "rotate(45deg)",
+            opacity: 0,
           }}
         ></div>
       ))}
