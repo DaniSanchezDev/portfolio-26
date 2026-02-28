@@ -29,10 +29,24 @@ const Hero = () => {
 
           <div className=" pt-4 opacity-0 animate-fade-in-delay-4">
             <a href="#projects" className="button">
-              Trabajos
+              Ver Proyectos
             </a>
           </div>
         </div>
+
+        <a
+          href="#projects"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 group"
+          aria-label="Ir a proyectos"
+        >
+          <div className="flex flex-col items-center gap-1">
+            <div className="w-px h-10 bg-linear-to-b from-muted-foreground/80 to-transparent rounded-full" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-scroll-hint" />
+          </div>
+          <span className="text-xs text-muted-foreground tracking-widest uppercase group-hover:text-primary transition-colors duration-300">
+            Sigue bajando
+          </span>
+        </a>
       </div>
     </section>
   );
