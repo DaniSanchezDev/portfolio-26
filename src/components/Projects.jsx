@@ -7,17 +7,17 @@ const projects = [
     name: "Pawtopia",
     description:
       "Pawtopia es un proyecto web desarrollado junto a tres compañeros enfocado en la adopción responsable y el bienestar animal. La plataforma combina diseño y contenido con propósito social, permitiéndonos trabajar en equipo en la planificación, estructura y desarrollo del sitio.",
-    image: "/projects/pawtopia.png",
+    image: "/projects/Pawtopia.png",
     tags: ["HTML", "CSS", "JavaScript", "TailwindCSS"],
     url: "https://pawtopia-nine.vercel.app/",
-    github: "https://github.com/DaniSanchezDev/PawTopia",
+    github: "https://github.com/Danesa iSanchezDev/PawTopia",
   },
   {
     id: 2,
     name: "EcoVibe",
     description:
       "Eco Vibe es una web desarrollada junto a un compañero enfocada en sostenibilidad y hábitos responsables. El proyecto combina diseño claro y estructura organizada, reforzando nuestra colaboración en la planificación y desarrollo conjunto.",
-    image: "/projects/ecovibe.png",
+    image: "/projects/Ecovibe.png",
     tags: ["HTML", "CSS", "JavaScript", "Boostrap"],
     url: "https://eco-vibe.vercel.app/",
     github: "https://github.com/DaniSanchezDev/eco-vibe",
@@ -27,7 +27,7 @@ const projects = [
     name: "Appfluence",
     description:
       "Proyecto de página web de podcast desarrollada con HTML, CSS y JavaScript, centrada en ofrecer una experiencia de usuario sencilla y moderna para la reproducción y visualización de contenido. Incluye integración de API de spotify para reproductor, diseño responsive y funcionalidades básicas",
-    image: "/projects/ecovibe.png",
+    image: "/projects/AppFluence.png",
     tags: ["HTML", "CSS", "JavaScript"],
     url: "https://danisanchezdev.github.io/P5_Podcast/html/index.html",
     github: "https://github.com/DaniSanchezDev/P5_Podcast",
@@ -77,10 +77,17 @@ const Projects = () => {
               </p>
               <div className="flex justify-between items-center">
                 <div className="flex space-x-3">
-                  <a href="">
+                  <a
+                    href={project.url}
+                    className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                    target="_blank"
+                  >
                     <ExternalLink />
                   </a>
-                  <a href="">
+                  <a
+                    href={project.github}
+                    className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                  >
                     <Github />
                   </a>
                 </div>
