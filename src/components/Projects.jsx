@@ -1,3 +1,4 @@
+import { ExternalLink, Github } from "lucide-react";
 import React from "react";
 
 const projects = [
@@ -8,6 +9,8 @@ const projects = [
       "Pawtopia es un proyecto web desarrollado junto a tres compañeros enfocado en la adopción responsable y el bienestar animal. La plataforma combina diseño y contenido con propósito social, permitiéndonos trabajar en equipo en la planificación, estructura y desarrollo del sitio.",
     image: "/projects/pawtopia.png",
     tags: ["HTML", "CSS", "JavaScript", "TailwindCSS"],
+    url: "https://pawtopia-nine.vercel.app/",
+    github: "https://github.com/DaniSanchezDev/PawTopia",
   },
   {
     id: 2,
@@ -16,6 +19,18 @@ const projects = [
       "Eco Vibe es una web desarrollada junto a un compañero enfocada en sostenibilidad y hábitos responsables. El proyecto combina diseño claro y estructura organizada, reforzando nuestra colaboración en la planificación y desarrollo conjunto.",
     image: "/projects/ecovibe.png",
     tags: ["HTML", "CSS", "JavaScript", "Boostrap"],
+    url: "https://eco-vibe.vercel.app/",
+    github: "https://github.com/DaniSanchezDev/eco-vibe",
+  },
+  {
+    id: 3,
+    name: "Appfluence",
+    description:
+      "Proyecto de página web de podcast desarrollada con HTML, CSS y JavaScript, centrada en ofrecer una experiencia de usuario sencilla y moderna para la reproducción y visualización de contenido. Incluye integración de API de spotify para reproductor, diseño responsive y funcionalidades básicas",
+    image: "/projects/ecovibe.png",
+    tags: ["HTML", "CSS", "JavaScript"],
+    url: "https://danisanchezdev.github.io/P5_Podcast/html/index.html",
+    github: "https://github.com/DaniSanchezDev/P5_Podcast",
   },
 ];
 
@@ -60,6 +75,16 @@ const Projects = () => {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 {project.description}
               </p>
+              <div className="flex justify-between items-center">
+                <div className="flex space-x-3">
+                  <a href="">
+                    <ExternalLink />
+                  </a>
+                  <a href="">
+                    <Github />
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </div>
