@@ -1,5 +1,4 @@
-import { ExternalLink, Github } from "lucide-react";
-import React from "react";
+import { ArrowRight, ExternalLink, Github } from "lucide-react";
 
 const projects = [
   {
@@ -10,13 +9,13 @@ const projects = [
     image: "/projects/Pawtopia.png",
     tags: ["HTML", "CSS", "JavaScript", "TailwindCSS"],
     url: "https://pawtopia-nine.vercel.app/",
-    github: "https://github.com/Danesa iSanchezDev/PawTopia",
+    github: "https://github.com/DaniSanchezDev/PawTopia",
   },
   {
     id: 2,
     name: "EcoVibe",
     description:
-      "Eco Vibe es una web desarrollada junto a un compañero enfocada en sostenibilidad y hábitos responsables. El proyecto combina diseño claro y estructura organizada, reforzando nuestra colaboración en la planificación y desarrollo conjunto.",
+      "Eco Vibe es una web desarrollada junto a Eloy Lozano con un enfoque en la concienciación del medio ambiente, mostrando información sobre reutilización de materiales y cuidado del medio ambiente mediante un diseño limpio y estructurado. Este trabajo refuerza nuestra colaboración en la planificación.",
     image: "/projects/Ecovibe.png",
     tags: ["HTML", "CSS", "JavaScript", "Boostrap"],
     url: "https://eco-vibe.vercel.app/",
@@ -28,7 +27,7 @@ const projects = [
     description:
       "Proyecto de página web de podcast desarrollada con HTML, CSS y JavaScript, centrada en ofrecer una experiencia de usuario sencilla y moderna para la reproducción y visualización de contenido. Incluye integración de API de spotify para reproductor, diseño responsive y funcionalidades básicas",
     image: "/projects/AppFluence.png",
-    tags: ["HTML", "CSS", "JavaScript"],
+    tags: ["HTML", "CSS", "JavaScript", "Flexbox"],
     url: "https://danisanchezdev.github.io/P5_Podcast/html/index.html",
     github: "https://github.com/DaniSanchezDev/P5_Podcast",
   },
@@ -37,7 +36,7 @@ const projects = [
 const Projects = () => {
   return (
     <section id="projects" className="py-24 px-4 relative">
-      <div className="container mx-auto max-w-5xl">
+      <div className="container mx-auto max-w-6xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
           Mis <span className="text-primary">Proyectos</span>
         </h2>
@@ -59,8 +58,8 @@ const Projects = () => {
                 />
               </div>
 
-              <div className="px-4 pt-4 pb-2">
-                <div className="flex flex-wrap gap-2">
+              <div className="px-6 pt-6 pb-6 flex flex-col">
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
@@ -70,30 +69,44 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-              </div>
-              <h3 className="font-semibold text-lg mb-1">{project.name}</h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                {project.description}
-              </p>
-              <div className="flex justify-between items-center">
-                <div className="flex space-x-3">
+
+                <h3 className="font-semibold text-lg mb-3 text-center">
+                  {project.name}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed mb-6 text-justify">
+                  {project.description}
+                </p>
+                <div className="flex justify-center items-center gap-6 pt-4 border-t border-border/30">
                   <a
                     href={project.url}
-                    className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                    className="text-foreground/70 hover:text-primary transition-colors duration-300 p-2 rounded-lg hover:bg-primary/10"
                     target="_blank"
+                    rel="noopener noreferrer"
+                    title="Ver proyecto"
                   >
-                    <ExternalLink />
+                    <ExternalLink size={20} />
                   </a>
                   <a
                     href={project.github}
-                    className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                    className="text-foreground/70 hover:text-primary transition-colors duration-300 p-2 rounded-lg hover:bg-primary/10"
+                    target="_blank"
+                    title="Ver código"
                   >
-                    <Github />
+                    <Github size={20} />
                   </a>
                 </div>
               </div>
             </div>
           ))}
+        </div>
+        <div className="text-center mt-12">
+          <a
+            href="https://github.com/DaniSanchezDev"
+            className="button w-fit flex items-center mx-auto gap-2 pointer-events-auto"
+            target="_blank"
+          >
+            Check My Github <ArrowRight size={16} />
+          </a>
         </div>
       </div>
     </section>
