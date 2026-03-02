@@ -3,8 +3,11 @@ import "./index.css";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "./components/ui/toaster";
+import { useLenis } from "./hooks/useLenis";
 
 function App() {
+  useLenis();
+
   return (
     <>
       <Toaster />
