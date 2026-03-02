@@ -6,7 +6,7 @@ const projects = [
     name: "Pawtopia",
     description:
       "Pawtopia es un proyecto web desarrollado junto a tres compañeros enfocado en la adopción responsable y el bienestar animal. La plataforma combina diseño y contenido con propósito social, permitiéndonos trabajar en equipo en la planificación, estructura y desarrollo del sitio.",
-    image: "/projects/pawtopia.png",
+    image: "/projects/Pawtopia.webp",
     tags: ["HTML", "CSS", "JavaScript", "TailwindCSS"],
     url: "https://pawtopia-nine.vercel.app/",
     github: "https://github.com/DaniSanchezDev/PawTopia",
@@ -16,7 +16,7 @@ const projects = [
     name: "EcoVibe",
     description:
       "Eco Vibe es una web desarrollada junto a Eloy Lozano con un enfoque en la concienciación del medio ambiente, mostrando información sobre reutilización de materiales y cuidado del medio ambiente mediante un diseño limpio y estructurado. Este trabajo refuerza nuestra colaboración en la planificación.",
-    image: "/projects/ecovibe.png",
+    image: "/projects/EcoVibe.webp",
     tags: ["HTML", "CSS", "JavaScript", "Bootstrap"],
     url: "https://eco-vibe.vercel.app/",
     github: "https://github.com/DaniSanchezDev/eco-vibe",
@@ -26,7 +26,7 @@ const projects = [
     name: "Appfluence",
     description:
       "Proyecto de página web de podcast desarrollada con HTML, CSS y JavaScript, centrada en ofrecer una experiencia de usuario sencilla y moderna para la reproducción y visualización de contenido. Incluye integración de API de spotify para reproductor, diseño responsive y funcionalidades básicas",
-    image: "/projects/AppFluence.png",
+    image: "/projects/Appfluence.webp",
     tags: ["HTML", "CSS", "JavaScript", "Flexbox"],
     url: "https://danisanchezdev.github.io/P5_Podcast/html/index.html",
     github: "https://github.com/DaniSanchezDev/P5_Podcast",
@@ -51,11 +51,20 @@ const Projects = () => {
               className="group rounded-2xl border border-border/70 bg-background/40 backdrop-blur-sm p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:bg-background/60 hover:shadow-lg"
             >
               <div className="aspect-video overflow-hidden rounded-lg">
-                <img
-                  src={project.image}
-                  alt={project.name}
-                  className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                />
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-full"
+                >
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+                      project.id === 1 ? "object-[center_0%]" : "object-center"
+                    }`}
+                  />
+                </a>
               </div>
 
               <div className="px-6 pt-6 pb-6 flex flex-col">
