@@ -9,25 +9,23 @@ const About = () => {
           Sobre <span className="text-primary">mí</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
           <div className="space-y-6 p-6 md:p-8 rounded-2xl border border-border/70 bg-background/40 backdrop-blur-sm shadow-sm">
             <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-tight">
               Frontend Developer apasionado por crear experiencias web
             </h3>
             <p className="text-foreground/90 leading-relaxed">
-              Llevo más de 2 años construyendo proyectos frontend y un año
+              Llevo más de 2 años construyendo proyectos frontend y 1 año
               trabajando profesionalmente en el sector. Me motiva crear
               interfaces limpias, eficientes y bien estructuradas, cuidando
               tanto la experiencia de usuario como la calidad del código.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Apasionado del desarrollo Frontend, disfruto creando soluciones
-              elegantes, modernas y bien estructuradas. Si tienes interés o
-              curiosidad de saber algo sobre mí, estoy abierto a charlar. Me
-              motiva aprender constantemente, descubrir nuevas tecnologías y
-              seguir perfeccionando mi stack principal, especialmente en React,
-              buscando siempre mejorar la calidad, el rendimiento y la
-              experiencia de usuario en cada proyecto.
+              modernas y elegantes. Me encanta aprender constantemente, explorar
+              nuevas tecnologías y seguir perfeccionando mi stack principal,
+              especialmente en React, buscando siempre mejorar el rendimiento y
+              la experiencia en cada proyecto.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
@@ -44,7 +42,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-12 h-full place-items-center">
             <div className="group rounded-2xl border border-border/70 bg-background/40 backdrop-blur-sm p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:bg-background/60 hover:shadow-lg">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-full bg-primary/10 shrink-0 ring-1 ring-primary/10 transition-all duration-300 group-hover:bg-primary/15 group-hover:ring-primary/25">
