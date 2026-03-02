@@ -105,7 +105,7 @@ const Projects = () => {
             className="button w-fit flex items-center mx-auto gap-2 pointer-events-auto"
             target="_blank"
           >
-            Check My Github <ArrowRight size={16} />
+            Visita mi Github <ArrowRight size={16} />
           </a>
         </div>
       </div>
