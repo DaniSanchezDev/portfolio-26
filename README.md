@@ -4,10 +4,13 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 
 ## ✨ Características Principales
 
+- **Footer Profesional**: Información personal, enlaces rápidos y redes sociales con diseño coherente
+- **Descarga de CV**: Botón funcional para descargar currículum en PDF
+- **Scroll Suave Premium**: Implementado con Lenis para una experiencia de scroll fluida y continua
+- **Tema Oscuro por Defecto**: Modo nocturno como tema inicial (preserva preferencia del usuario)
 - **Formulario de Contacto Funcional**: Envío de emails reales mediante EmailJS con notificaciones toast
 - **Diseño Moderno y Responsivo**: Interfaz limpia, minimalista y adaptada a todos los dispositivos
 - **Animaciones Fluidas**: Fondo dinámico con estrellas parpadeantes y meteoritos, transiciones suaves en componentes
-- **Tema Oscuro/Claro**: Toggle de tema integrado con persistencia
 - **Navegación Inteligente**: Navbar sticky con navegación suave entre secciones
 - **Rendimiento Optimizado**: Build rápido con Vite, lazy loading de componentes
 - **Código Limpio**: Seguimiento de mejores prácticas, ESLint configurado, componentes reutilizables
@@ -21,6 +24,7 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 - TailwindCSS (estilos)
 - React Router (navegación)
 - Lucide Icons (iconografía)
+- Lenis (scroll suave)
 
 **Desarrollo:**
 
@@ -49,14 +53,16 @@ src/
 │   ├── StarBackground.jsx      # Fondo animado (estrellas + meteoritos)
 │   ├── Navbar.jsx              # Barra de navegación sticky
 │   ├── Hero.jsx                # Sección principal con presentación
-│   ├── About.jsx               # Sección sobre mí
+│   ├── About.jsx               # Sección sobre mí con descarga de CV
 │   ├── Skills.jsx              # Carrusel interactivo de habilidades
 │   ├── Projects.jsx            # Grid de proyectos con enlaces
 │   ├── Contact.jsx             # Formulario de contacto con EmailJS
+│   ├── Footer.jsx              # Footer profesional con info y redes
 │   ├── ThemeToggle.jsx         # Toggle de tema claro/oscuro
 │   └── ...
 ├── hooks/
-│   └── use-toast.js            # Hook para sistema de notificaciones
+│   ├── use-toast.js            # Hook para sistema de notificaciones
+│   └── useLenis.js             # Hook para scroll suave con Lenis
 ├── pages/
 │   ├── Home.jsx                # Página principal (integra todos los componentes)
 │   └── NotFound.jsx            # Página 404
@@ -159,8 +165,28 @@ Sistema de notificaciones implementado con Radix UI:
 ### ThemeToggle
 
 - Toggle de tema claro/oscuro
+- **Tema oscuro por defecto**: Primera visita siempre en modo nocturno
 - Persistencia en localStorage
 - Transición suave de colores
+
+### Footer
+
+Footer profesional con tres columnas:
+
+- **Información personal**: Nombre y descripción profesional
+- **Enlaces rápidos**: Navegación en línea a todas las secciones
+- **Redes sociales**: GitHub, LinkedIn y Email con iconos
+- **Copyright**: Año dinámico y créditos
+- **Diseño coherente**: Mismos estilos que el resto del portfolio
+
+### Scroll Suave (Lenis)
+
+Implementación de scroll premium con Lenis:
+
+- **Transición fluida**: Scroll continuo sin saltos bruscos
+- **Easing exponencial**: Aceleración y desaceleración naturales
+- **Compatible con touch**: Funciona en móvil y desktop
+- **60fps**: Animación fluida sin lag
 
 ## 🚀 Instalación y Uso
 
@@ -185,11 +211,12 @@ npm run lint
 
 - ✅ **Contact**: Formulario funcional con envío de emails (EmailJS + Toast notifications)
 - ✅ **Hero**: Presentación principal con animaciones
-- ✅ **About**: Información personal
+- ✅ **About**: Información personal con descarga de CV
 - ✅ **Skills**: Carrusel interactivo de habilidades
 - ✅ **Projects**: 3 proyectos destacados (Pawtopia, EcoVibe, AppFluence)
+- ✅ **Footer**: Footer profesional con info, enlaces y redes sociales
 - ✅ **Navbar**: Navegación entre secciones
-- ✅ **Theme Toggle**: Tema claro/oscuro
+- ✅ **Theme Toggle**: Tema oscuro por defecto con toggle
 
 ## 💻 Habilidades Técnicas Showcased
 
@@ -332,5 +359,5 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 ---
 
 **Última actualización**: Marzo 2026  
-**Versión**: 1.1.0  
+**Versión**: 1.2.0  
 **Estado**: ✅ Funcional y en desarrollo activo
