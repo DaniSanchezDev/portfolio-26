@@ -52,7 +52,7 @@ const Contact = () => {
 
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           Estoy abierto a nuevas oportunidades y proyectos interesantes. Si
-          tienes interés o curiosidad de saber algo sobre mi, estoy abierto a
+          tienes interés o curiosidad de saber algo sobre mí, estoy abierto a
           nuevas oportunidades
         </p>
 

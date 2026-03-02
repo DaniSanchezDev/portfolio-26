@@ -17,7 +17,7 @@ const projects = [
     description:
       "Eco Vibe es una web desarrollada junto a Eloy Lozano con un enfoque en la concienciación del medio ambiente, mostrando información sobre reutilización de materiales y cuidado del medio ambiente mediante un diseño limpio y estructurado. Este trabajo refuerza nuestra colaboración en la planificación.",
     image: "/projects/Ecovibe.png",
-    tags: ["HTML", "CSS", "JavaScript", "Boostrap"],
+    tags: ["HTML", "CSS", "JavaScript", "Bootstrap"],
     url: "https://eco-vibe.vercel.app/",
     github: "https://github.com/DaniSanchezDev/eco-vibe",
   },

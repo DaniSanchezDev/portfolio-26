@@ -6,7 +6,7 @@ const About = () => {
     <section id="about" className="py-24 px-4 relative">
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-          Sobre <span className="text-primary">mi</span>
+          Sobre <span className="text-primary">mí</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -22,9 +22,10 @@ const About = () => {
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Apasionado del desarrollo Frontend, disfruto creando soluciones
-              elegantes, modernas y bien estructuradas. Me motiva aprender
-              constantemente, descubrir nuevas tecnologías y seguir
-              perfeccionando mi stack principal, especialmente en React,
+              elegantes, modernas y bien estructuradas. Si tienes interés o
+              curiosidad de saber algo sobre mí, estoy abierto a charlar. Me
+              motiva aprender constantemente, descubrir nuevas tecnologías y
+              seguir perfeccionando mi stack principal, especialmente en React,
               buscando siempre mejorar la calidad, el rendimiento y la
               experiencia de usuario en cada proyecto.
             </p>
@@ -34,7 +35,8 @@ const About = () => {
                 Contactar
               </a>
               <a
-                href=""
+                href="/CV-Daniel-Sanchez.pdf"
+                download="CV-Daniel-Sanchez.pdf"
                 className="px-6 py-2 rounded-full border border-primary text-primary font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-lg active:scale-95"
               >
                 Descargar CV
