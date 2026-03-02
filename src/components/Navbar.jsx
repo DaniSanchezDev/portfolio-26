@@ -3,11 +3,11 @@ import { cn } from "../lib/utils";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { name: "Home", href: "#hero" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
+  { name: "Inicio", href: "#hero" },
+  { name: "Sobre mí", href: "#about" },
+  { name: "Habilidades", href: "#skills" },
+  { name: "Proyectos", href: "#projects" },
+  { name: "Contacto", href: "#contact" },
 ];
 
 const Navbar = () => {
@@ -58,7 +58,7 @@ const Navbar = () => {
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           className="md:hidden p-2 text-foreground z-50"
-          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         >
           {" "}
           {isOpen ? <X size={24} /> : <Menu size={24} />}{" "}
