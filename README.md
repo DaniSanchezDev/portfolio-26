@@ -4,6 +4,7 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 
 ## ✨ Características Principales
 
+- **Formulario de Contacto Funcional**: Envío de emails reales mediante EmailJS con notificaciones toast
 - **Diseño Moderno y Responsivo**: Interfaz limpia, minimalista y adaptada a todos los dispositivos
 - **Animaciones Fluidas**: Fondo dinámico con estrellas parpadeantes y meteoritos, transiciones suaves en componentes
 - **Tema Oscuro/Claro**: Toggle de tema integrado con persistencia
@@ -27,6 +28,10 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 - CSS3 (animaciones)
 - JavaScript ES6+
 
+**Servicios:**
+
+- EmailJS (envío de emails desde el formulario)
+
 **Herramientas:**
 
 - Git/GitHub (control de versiones)
@@ -38,17 +43,25 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 ```
 src/
 ├── components/
+│   ├── ui/                     # Componentes UI reutilizables (Toast)
+│   │   ├── toast.jsx
+│   │   └── toaster.jsx
 │   ├── StarBackground.jsx      # Fondo animado (estrellas + meteoritos)
 │   ├── Navbar.jsx              # Barra de navegación sticky
 │   ├── Hero.jsx                # Sección principal con presentación
 │   ├── About.jsx               # Sección sobre mí
 │   ├── Skills.jsx              # Carrusel interactivo de habilidades
 │   ├── Projects.jsx            # Grid de proyectos con enlaces
+│   ├── Contact.jsx             # Formulario de contacto con EmailJS
 │   ├── ThemeToggle.jsx         # Toggle de tema claro/oscuro
 │   └── ...
+├── hooks/
+│   └── use-toast.js            # Hook para sistema de notificaciones
 ├── pages/
 │   ├── Home.jsx                # Página principal (integra todos los componentes)
 │   └── NotFound.jsx            # Página 404
+├── lib/
+│   └── utils.js                # Utilidades (cn function)
 ├── App.jsx                     # Componente raíz con rutas
 ├── index.css                   # Estilos globales y animaciones
 └── main.jsx                    # Punto de entrada
@@ -71,6 +84,48 @@ Fondo animado con:
   - Duración: 3-7 segundos
   - Delay: 0-3 segundos
   - Efecto fade in/out
+
+### About
+
+Sección sobre mí con:
+
+- **Presentación profesional**: Descripción de experiencia y enfoque
+- **Tarjetas de valor**: 3 tarjetas destacando habilidades (Desarrollo, UX, Colaboración)
+- **CTA dual**: Botón de contacto + descarga de CV
+- **Diseño coherente**: Mismos estilos de tarjetas que el resto del portfolio
+
+### Contact
+
+Formulario de contacto completamente funcional:
+
+- **Integración EmailJS**: Envío de emails sin backend propio
+- **Validación de campos**: Nombre, email y mensaje requeridos
+- **Notificaciones Toast**: Feedback visual de éxito/error
+- **Información de contacto**: Email, teléfono, localización con iconos
+- **Links a redes sociales**: LinkedIn y GitHub
+- **Estilos coherente**: Mismo diseño que las tarjetas de proyectos
+- **Seguridad**: Credenciales en variables de entorno (`.env`)
+
+**Configuración EmailJS:**
+
+1. Crear cuenta en [EmailJS](https://www.emailjs.com/)
+2. Configurar servicio de email y plantilla
+3. Agregar credenciales al archivo `.env`:
+   ```env
+   VITE_EMAILJS_SERVICE_ID=tu_service_id
+   VITE_EMAILJS_TEMPLATE_ID=tu_template_id
+   VITE_EMAILJS_PUBLIC_KEY=tu_public_key
+   ```
+
+### Toast Notifications
+
+Sistema de notificaciones implementado con Radix UI:
+
+- **Componentes**: Toast, ToastProvider, ToastViewport
+- **Hook personalizado**: `useToast()` para gestionar notificaciones
+- **Variantes**: Default, Success (verde), Destructive (rojo)
+- **Animaciones**: Entrada/salida suaves con transiciones
+- **Uso**: Feedback de formularios y acciones del usuario
 
 ### Navbar
 
@@ -128,6 +183,7 @@ npm run lint
 
 ## 📊 Secciones del Portfolio
 
+- ✅ **Contact**: Formulario funcional con envío de emails (EmailJS + Toast notifications)
 - ✅ **Hero**: Presentación principal con animaciones
 - ✅ **About**: Información personal
 - ✅ **Skills**: Carrusel interactivo de habilidades
@@ -219,11 +275,16 @@ Modificar en `src/index.css`:
 
 ### Variables de Entorno
 
-Crear `.env.local` si es necesario:
+Crear archivo `.env` en la raíz del proyecto:
 
 ```env
-VITE_APP_TITLE=Daniel Sánchez - Portfolio
+# EmailJS Configuration
+VITE_EMAILJS_SERVICE_ID=tu_service_id
+VITE_EMAILJS_TEMPLATE_ID=tu_template_id
+VITE_EMAILJS_PUBLIC_KEY=tu_public_key
 ```
+
+⚠️ **Importante**: El archivo `.env` está en `.gitignore` y no se sube al repositorio.
 
 ### ESLint
 
@@ -254,5 +315,5 @@ Este proyecto está bajo licencia MIT. Ver archivo `LICENSE` para más detalles.
 ---
 
 **Última actualización**: Marzo 2026  
-**Versión**: 1.0.0  
+**Versión**: 1.1.0  
 **Estado**: ✅ Funcional y en desarrollo activo
