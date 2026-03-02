@@ -242,6 +242,23 @@ Página web de podcast con reproductor integrado
 - **Tech**: HTML, CSS, JavaScript, Spotify API
 - **URL**: https://danisanchezdev.github.io/P5_Podcast/html/index.html
 
+## 🔮 Futuras Funcionalidades
+
+Ideas y mejoras planificadas para futuras versiones del portfolio:
+
+### IA y Chatbot
+
+- **Asistente Virtual Personal**: Bot conversacional integrado que responda preguntas sobre mi experiencia, habilidades, proyectos y disponibilidad
+- **Integración con OpenAI/Claude**: Uso de APIs de IA para respuestas inteligentes y contextuales
+- **Ventana de Chat Flotante**: Widget de chat accesible desde cualquier sección del portfolio
+- **FAQ Inteligente**: Sistema que aprenda de las preguntas más frecuentes y mejore sus respuestas
+
+### Performance y Accesibilidad
+
+- **Multi-idioma**: Soporte completo en español e inglés
+- **Modo Alto Contraste**: Mejor accesibilidad para usuarios con discapacidad visual
+- **Optimización SEO**: Meta tags dinámicos, sitemap, schema.org
+
 ## 🎨 Personalización
 
 ### Colores y Tema
