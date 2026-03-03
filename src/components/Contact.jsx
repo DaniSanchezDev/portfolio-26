@@ -61,7 +61,7 @@ const Contact = () => {
               Información de contacto
             </h3>
             <div className="space-y-6">
-              <div className="flex items-center space-x-4 p-4 rounded-lg bg-background/30 hover:bg-background/50 transition-colors duration-300">
+              <div className="flex items-center space-x-4 p-2 sm:p-4 rounded-lg bg-background/30 hover:bg-background/50 transition-colors duration-300">
                 <div className="p-3 rounded-full bg-primary/10 shrink-0">
                   <Mail className="h-6 w-6 text-primary" />
                 </div>
@@ -77,7 +77,7 @@ const Contact = () => {
                   </a>
                 </div>
               </div>
-              <div className="flex items-center space-x-4 p-4 rounded-lg bg-background/30 hover:bg-background/50 transition-colors duration-300">
+              <div className="flex items-center space-x-4 p-2 sm:p-4 rounded-lg bg-background/30 hover:bg-background/50 transition-colors duration-300">
                 <div className="p-3 rounded-full bg-primary/10 shrink-0">
                   <Phone className="h-6 w-6 text-primary" />
                 </div>
@@ -93,7 +93,7 @@ const Contact = () => {
                   </a>
                 </div>
               </div>
-              <div className="flex items-center space-x-4 p-4 rounded-lg bg-background/30 hover:bg-background/50 transition-colors duration-300">
+              <div className="flex items-center space-x-4 p-2 sm:p-4 rounded-lg bg-background/30 hover:bg-background/50 transition-colors duration-300">
                 <div className="p-3 rounded-full bg-primary/10 shrink-0">
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
