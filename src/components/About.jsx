@@ -14,13 +14,13 @@ const About = () => {
             <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-tight">
               Frontend Developer apasionado por crear experiencias web
             </h3>
-            <p className="text-foreground/90 leading-relaxed">
+            <p className="text-foreground/90 leading-relaxed text-justify">
               Llevo más de 2 años construyendo proyectos frontend y 1 año
               trabajando profesionalmente en el sector. Me motiva crear
               interfaces limpias, eficientes y bien estructuradas, cuidando
               tanto la experiencia de usuario como la calidad del código.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed text-justify">
               Apasionado del desarrollo Frontend, disfruto creando soluciones
               modernas y elegantes. Me encanta aprender constantemente, explorar
               nuevas tecnologías y seguir perfeccionando mi stack principal,
@@ -52,7 +52,7 @@ const About = () => {
                   <h4 className="font-semibold text-lg tracking-tight">
                     Desarrollador de Software
                   </h4>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed text-justify">
                     Crear webs responsivas y aplicaciones web con frameworks
                     modernos
                   </p>
@@ -68,7 +68,7 @@ const About = () => {
                   <h4 className="font-semibold text-lg tracking-tight">
                     Enfoque en el usuario
                   </h4>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed text-justify">
                     Interfaces claras, accesibles y consistentes, cuidando la
                     usabilidad y los detalles.
                   </p>
@@ -84,7 +84,7 @@ const About = () => {
                   <h4 className="font-semibold text-lg tracking-tight">
                     Experiencia y colaboración
                   </h4>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed text-justify">
                     Trabajo con Git, revisiones de código y metodologías ágiles,
                     coordinándome con el equipo y los objetivos del producto.
                   </p>

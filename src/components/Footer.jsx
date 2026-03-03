@@ -14,7 +14,7 @@ const Footer = () => {
                 <span className="text-foreground">Daniel </span>
                 <span className="text-primary">Sánchez</span>
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed text-justify">
                 Frontend Developer especializado en React, creando experiencias
                 web modernas, accesibles y eficientes.
               </p>
