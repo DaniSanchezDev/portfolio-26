@@ -3,13 +3,13 @@ import { ArrowRight, ExternalLink, Github } from "lucide-react";
 const projects = [
   {
     id: 1,
-    name: "Pawtopia",
+    name: "Hebi Academy",
     description:
-      "Pawtopia es un proyecto web desarrollado junto a tres compañeros enfocado en la adopción responsable y el bienestar animal. La plataforma combina diseño y contenido con propósito social, permitiéndonos trabajar en equipo en la planificación, estructura y desarrollo del sitio.",
-    image: "/projects/Pawtopia.webp",
-    tags: ["HTML", "CSS", "JavaScript", "TailwindCSS"],
-    url: "https://pawtopia-nine.vercel.app/",
-    github: "https://github.com/DaniSanchezDev/PawTopia",
+      "Plataforma educativa moderna desarrollada con Next.js 15 y Tailwind CSS. Sistema de cursos integrado con Stripe para pagos y Prisma como ORM para gestión de datos. Ofrece una experiencia de usuario intuitiva y segura para estudiantes y educadores.",
+    image: "/projects/Hebi-Academy.png",
+    tags: ["Next 15", "Tailwind", "Stripe", "Prisma"],
+    url: "https://hebi-academy.vercel.app/courses",
+    github: "https://github.com/DaniSanchezDev/Hebi-Academy",
   },
   {
     id: 2,
@@ -23,6 +23,16 @@ const projects = [
   },
   {
     id: 3,
+    name: "Pawtopia",
+    description:
+      "Pawtopia es un proyecto web desarrollado junto a tres compañeros enfocado en la adopción responsable y el bienestar animal. La plataforma combina diseño y contenido con propósito social, permitiéndonos trabajar en equipo en la planificación, estructura y desarrollo del sitio.",
+    image: "/projects/Pawtopia.webp",
+    tags: ["HTML", "CSS", "JavaScript", "TailwindCSS"],
+    url: "https://pawtopia-nine.vercel.app/",
+    github: "https://github.com/DaniSanchezDev/PawTopia",
+  },
+  {
+    id: 4,
     name: "Appfluence",
     description:
       "Proyecto de página web de podcast desarrollada con HTML, CSS y JavaScript, centrada en ofrecer una experiencia de usuario sencilla y moderna para la reproducción y visualización de contenido. Incluye integración de API de spotify para reproductor, diseño responsive y funcionalidades básicas",
@@ -44,13 +54,13 @@ const Projects = () => {
           Aquí podrás encontrar algunos de los proyectos en los que he
           trabajado, tanto individualmente como en equipo.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project) => (
             <div
               key={project.id}
               className="group rounded-2xl border border-border/70 bg-background/40 backdrop-blur-sm p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:bg-background/60 hover:shadow-lg"
             >
-              <div className="aspect-video overflow-hidden rounded-lg">
+              <div className="aspect-2/1 overflow-hidden rounded-lg">
                 <a
                   href={project.url}
                   target="_blank"
