@@ -6,7 +6,7 @@ const projects = [
     name: "Hebi Academy",
     description:
       "Plataforma educativa moderna desarrollada con Next.js 15 y Tailwind CSS. Sistema de cursos integrado con Stripe para pagos y Prisma como ORM para gestión de datos. Ofrece una experiencia de usuario intuitiva y segura para estudiantes y educadores.",
-    image: "/projects/Hebi-Academy.png",
+    image: "/projects/Miniatura Hebi-Academy.png",
     tags: ["Next 15", "Tailwind", "Stripe", "Prisma"],
     url: "https://hebi-academy.vercel.app/courses",
     github: "https://github.com/DaniSanchezDev/Hebi-Academy",
