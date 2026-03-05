@@ -22,6 +22,17 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   return (
     <nav
       className={cn(
@@ -58,7 +69,7 @@ const Navbar = () => {
 
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="md:hidden p-2 text-foreground z-50"
+          className="md:hidden p-2 text-foreground relative z-[250]"
           aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         >
           {" "}
@@ -66,7 +77,7 @@ const Navbar = () => {
         </button>
         <div
           className={cn(
-            "fixed inset-0 bg-background/95 backdrop-blur-md z-40 flex flex-col items-center justify-center",
+            "fixed top-0 left-0 w-screen h-screen bg-background z-[210] flex flex-col items-center justify-center",
             "transition-all duration-300 md:hidden",
             isOpen
               ? "opacity-100 pointer-events-auto"
