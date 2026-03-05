@@ -19,13 +19,12 @@ const ChatBot = () => {
   const lastResetRef = useRef(Date.now());
   const responsesCacheRef = useRef(new Map());
 
-  // LÍMITES ESTRICTOS PARA PLAN FREE DE GROQ
-  const MAX_REQUESTS_PER_DAY = 100; // Muy por debajo del límite (500/día)
-  const MAX_REQUESTS_PER_HOUR = 15; // Máximo 15 por hora
-  const MAX_MESSAGES_IN_CONTEXT = 5; // Contexto más pequeño = menos tokens
-  const MAX_MESSAGE_LENGTH = 300; // Mensajes más cortos
-  const CACHE_DURATION_MS = 1000 * 60 * 60; // 1 hora de caché
-  const MIN_DELAY_BETWEEN_REQUESTS_MS = 2000; // 2 segundos entre requests
+  const MAX_REQUESTS_PER_DAY = 100;
+  const MAX_REQUESTS_PER_HOUR = 15;
+  const MAX_MESSAGES_IN_CONTEXT = 5;
+  const MAX_MESSAGE_LENGTH = 300;
+  const CACHE_DURATION_MS = 1000 * 60 * 60;
+  const MIN_DELAY_BETWEEN_REQUESTS_MS = 2000;
 
   const dailyCountRef = useRef(0);
   const lastRequestTimeRef = useRef(0);
@@ -89,19 +88,16 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
     const hourInMs = 60 * 60 * 1000;
     const dayInMs = 24 * 60 * 60 * 1000;
 
-    // Reset hourly counter
     if (now - lastResetRef.current > hourInMs) {
       requestCountRef.current = 0;
       lastResetRef.current = now;
     }
 
-    // Reset daily counter
     if (now - dailyResetRef.current > dayInMs) {
       dailyCountRef.current = 0;
       dailyResetRef.current = now;
     }
 
-    // Check hourly limit
     if (requestCountRef.current >= MAX_REQUESTS_PER_HOUR) {
       return {
         allowed: false,
@@ -109,7 +105,6 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
       };
     }
 
-    // Check daily limit
     if (dailyCountRef.current >= MAX_REQUESTS_PER_DAY) {
       return {
         allowed: false,
@@ -117,7 +112,6 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
       };
     }
 
-    // Check minimum delay between requests
     if (now - lastRequestTimeRef.current < MIN_DELAY_BETWEEN_REQUESTS_MS) {
       return {
         allowed: false,
@@ -173,7 +167,6 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
     setError("");
 
     try {
-      // Verificar si hay respuesta en caché
       const cachedResponse = getCachedResponse(input);
       if (cachedResponse) {
         const botMessage = {
@@ -232,7 +225,6 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
       const data = await response.json();
       const botResponse = data.choices[0].message.content;
 
-      // Guardar en caché
       setCachedResponse(input, botResponse);
 
       const botMessage = {
@@ -261,19 +253,20 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
 
   return (
     <>
-      {/* Botón flotante */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 bg-linear-to-r from-blue-500 to-purple-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-40 flex items-center justify-center hover:scale-110"
+        className="fixed bottom-6 right-6 bg-linear-to-r from-blue-500 to-purple-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110"
+        style={{ zIndex: 150 }}
         aria-label="Abrir chat"
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
 
-      {/* Ventana de chat */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-900 rounded-lg shadow-2xl flex flex-col z-40 h-[600px] border border-gray-200 dark:border-gray-700">
-          {/* Header */}
+        <div
+          className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-900 rounded-lg shadow-2xl flex flex-col h-[600px] border border-gray-200 dark:border-gray-700"
+          style={{ zIndex: 150 }}
+        >
           <div className="bg-linear-to-r from-blue-500 to-purple-600 text-white p-4 rounded-t-lg">
             <h3 className="font-bold text-lg">Asistente Daniel</h3>
             <p className="text-sm opacity-90">
@@ -281,7 +274,6 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
             </p>
           </div>
 
-          {/* Mensajes */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <div
@@ -320,7 +312,6 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
           <form
             onSubmit={handleSendMessage}
             className="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900 rounded-b-lg"
