@@ -264,7 +264,7 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
 
       {isOpen && (
         <div
-          className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-900 rounded-lg shadow-2xl flex flex-col h-[600px] border border-gray-200 dark:border-gray-700"
+          className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-900 rounded-lg shadow-2xl flex flex-col h-[500px] md:h-[600px] sm:h-[320px] border border-gray-200 dark:border-gray-700"
           style={{ zIndex: 150 }}
         >
           <div className="bg-linear-to-r from-blue-500 to-purple-600 text-white p-4 rounded-t-lg">
