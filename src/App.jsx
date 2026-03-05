@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "./components/ui/toaster";
 import { useLenis } from "./hooks/useLenis";
+import ChatBot from "./components/ChatBot";
 
 function App() {
   useLenis();
@@ -11,6 +12,7 @@ function App() {
   return (
     <>
       <Toaster />
+      <ChatBot />
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
