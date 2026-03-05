@@ -68,6 +68,17 @@ LinkedIn: https://linkedin.com/in/danielsanchezdev`;
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const getCachedResponse = (userInput) => {
     const cached = responsesCacheRef.current.get(userInput.toLowerCase());
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION_MS) {

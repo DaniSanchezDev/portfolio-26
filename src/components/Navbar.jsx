@@ -69,7 +69,7 @@ const Navbar = () => {
 
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="md:hidden p-2 text-foreground relative z-[250]"
+          className="md:hidden p-2 text-foreground relative z-250"
           aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         >
           {" "}
@@ -77,7 +77,7 @@ const Navbar = () => {
         </button>
         <div
           className={cn(
-            "fixed top-0 left-0 w-screen h-screen bg-background z-[210] flex flex-col items-center justify-center",
+            "fixed top-0 left-0 w-screen h-screen bg-background z-210 flex flex-col items-center justify-center",
             "transition-all duration-300 md:hidden",
             isOpen
               ? "opacity-100 pointer-events-auto"
