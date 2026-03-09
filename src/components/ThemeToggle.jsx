@@ -32,7 +32,7 @@ const ThemeToggle = () => {
     <button
       onClick={toggleTheme}
       className={cn(
-        "fixed max-sm:hidden top-5 right-5 z-[220] p-3 rounded-full",
+        "fixed max-sm:hidden top-5 right-5 z-220 p-3 rounded-full",
         "bg-card border border-border shadow-lg",
         "hover:shadow-xl hover:scale-110 transition-all duration-300",
         "backdrop-blur-sm bg-opacity-80",
