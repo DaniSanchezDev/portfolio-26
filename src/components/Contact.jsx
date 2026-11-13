@@ -3,6 +3,8 @@ import React, { useState, useRef } from "react";
 import { useToast } from "../hooks/use-toast";
 import emailjs from "@emailjs/browser";
 
+const SEND_COOLDOWN_MS = 60 * 1000;
+
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -12,14 +14,34 @@ const Contact = () => {
   const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
   const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
+  const lastSentAtRef = useRef(0);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Campo trampa: los humanos no lo ven, los bots suelen rellenarlo.
+    // Fingimos éxito para que el bot no sepa que ha sido descartado.
+    if (formRef.current.website.value) {
+      formRef.current.reset();
+      return;
+    }
+
+    if (Date.now() - lastSentAtRef.current < SEND_COOLDOWN_MS) {
+      toast({
+        title: "Mensaje ya enviado",
+        description: "Espera un momento antes de enviar otro mensaje.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     emailjs
       .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
       .then(
         () => {
+          lastSentAtRef.current = Date.now();
           toast({
             title: "¡Mensaje enviado!",
             description: "Gracias por contactarme, te responderé pronto.",
@@ -136,6 +158,14 @@ const Contact = () => {
           <div className="rounded-2xl border border-border/70 bg-background/40 backdrop-blur-sm p-4 sm:p-8 shadow-sm transition-all duration-300 hover:border-primary/30 hover:bg-background/60 hover:shadow-lg">
             <h3 className="text-2xl font-semibold mb-6">Envíame un mensaje</h3>
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="sr-only"
+              />
               <div>
                 <label
                   htmlFor="user_name"
@@ -148,6 +178,8 @@ const Contact = () => {
                   id="user_name"
                   name="user_name"
                   required
+                  maxLength={100}
+                  autoComplete="name"
                   className="w-full px-4 py-3 rounded-lg border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-border/80"
                   placeholder="Tu nombre"
                 />
@@ -164,6 +196,8 @@ const Contact = () => {
                   id="user_email"
                   name="user_email"
                   required
+                  maxLength={254}
+                  autoComplete="email"
                   className="w-full px-4 py-3 rounded-lg border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-border/80"
                   placeholder="tu.email@ejemplo.com"
                 />
@@ -179,6 +213,7 @@ const Contact = () => {
                   id="message"
                   name="message"
                   required
+                  maxLength={2000}
                   className="w-full px-4 py-3 rounded-lg border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-border/80 resize-none"
                   placeholder="Cuéntame sobre tu proyecto o idea..."
                   rows="4"

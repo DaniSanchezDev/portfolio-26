@@ -119,6 +119,7 @@ const Projects = () => {
                     href={project.github}
                     className="text-foreground/70 hover:text-primary transition-colors duration-300 p-2 rounded-lg hover:bg-primary/10"
                     target="_blank"
+                    rel="noopener noreferrer"
                     title="Ver código"
                   >
                     <Github size={20} />
@@ -133,6 +134,7 @@ const Projects = () => {
             href="https://github.com/DaniSanchezDev"
             className="button w-fit flex items-center mx-auto gap-2 pointer-events-auto"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Visita mi Github <ArrowRight size={16} />
           </a>

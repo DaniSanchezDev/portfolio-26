@@ -27,9 +27,16 @@ const localApiPlugin = () => ({
         const chunks = [];
         for await (const chunk of req) chunks.push(chunk);
 
+        const forwardedHeaders = ["content-type", "origin", "host"];
+        const headers = new Headers();
+        for (const name of forwardedHeaders) {
+          if (req.headers[name]) headers.set(name, req.headers[name]);
+        }
+        headers.set("x-forwarded-for", req.socket.remoteAddress ?? "local");
+
         const request = new Request("http://localhost/api/chat", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: Buffer.concat(chunks),
         });
 

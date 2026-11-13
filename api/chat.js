@@ -60,6 +60,22 @@ const json = (status, body) =>
     headers: { "Content-Type": "application/json" },
   });
 
+const MAX_BODY_BYTES = 16 * 1024;
+
+// Los navegadores siempre envían Origin en un fetch POST. Solo aceptamos
+// peticiones hechas desde la propia web, para que otras páginas no puedan
+// usar este endpoint (y la cuota de Groq) desde el navegador de sus visitantes.
+const isSameOrigin = (request) => {
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  if (!origin || !host) return false;
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+};
+
 const getClientIp = (request) =>
   request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
   request.headers.get("x-real-ip") ||
@@ -117,9 +133,21 @@ export async function POST(request) {
     return json(500, { error: "El asistente no está disponible ahora mismo." });
   }
 
+  if (!isSameOrigin(request)) {
+    return json(403, { error: "Origen no permitido." });
+  }
+
+  if (!request.headers.get("content-type")?.includes("application/json")) {
+    return json(415, { error: "Petición no válida." });
+  }
+
   let body;
   try {
-    body = await request.json();
+    const rawBody = await request.text();
+    if (rawBody.length > MAX_BODY_BYTES) {
+      return json(413, { error: "Petición demasiado grande." });
+    }
+    body = JSON.parse(rawBody);
   } catch {
     return json(400, { error: "Petición no válida." });
   }
