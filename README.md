@@ -19,7 +19,7 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 
 **Frontend:**
 
-- React 18 con Hooks
+- React 19 con Hooks
 - Vite (build tool)
 - TailwindCSS (estilos)
 - React Router (navegación)
@@ -35,6 +35,7 @@ Portfolio web moderno, responsivo y totalmente funcional desarrollado con React 
 **Servicios:**
 
 - EmailJS (envío de emails desde el formulario)
+- Groq (asistente IA del chatbot, vía función serverless `api/chat.js`; ver `CHATBOT_LIMITS.md`)
 
 **Herramientas:**
 
@@ -326,6 +327,7 @@ Crear archivo `.env` en la raíz del proyecto:
 VITE_EMAILJS_SERVICE_ID=tu_service_id
 VITE_EMAILJS_TEMPLATE_ID=tu_template_id
 VITE_EMAILJS_PUBLIC_KEY=tu_public_key
+GROQ_API_KEY=tu_groq_api_key
 ```
 
 ⚠️ **Importante**: El archivo `.env` está en `.gitignore` y no se sube al repositorio.

@@ -1,342 +1,309 @@
-import { useState, useRef, useEffect } from "react";
-import { Send, X, MessageCircle, AlertCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { MessageCircle, RotateCcw, Send, Sparkles, X } from "lucide-react";
+import { cn } from "../lib/utils";
+
+const MAX_MESSAGE_LENGTH = 300;
+const MAX_HISTORY_SENT = 8;
+
+const WELCOME_MESSAGE = {
+  id: "welcome",
+  role: "assistant",
+  content:
+    "¡Hola! Soy el asistente de Daniel. Puedo contarte sobre su experiencia, proyectos y habilidades. ¿Qué te gustaría saber?",
+};
+
+const SUGGESTIONS = [
+  "¿Qué proyectos ha hecho?",
+  "¿Cuál es su stack?",
+  "¿Cómo puedo contactarle?",
+];
+
+const LINK_PATTERN = /(https?:\/\/[^\s)]+|[\w.+-]+@[\w-]+\.[\w.]+)/g;
+
+let nextMessageId = 0;
+const createMessage = (role, content) => ({
+  id: `msg-${++nextMessageId}`,
+  role,
+  content,
+});
+
+// Convierte URLs y emails en enlaces y quita el Markdown básico que a veces
+// devuelve el modelo aunque se le pida texto plano.
+const renderMessageContent = (text) =>
+  text
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .split(LINK_PATTERN)
+    .map((part, index) => {
+      if (index % 2 === 0) return part;
+      const cleanPart = part.replace(/[.,;:]+$/, "");
+      const trailing = part.slice(cleanPart.length);
+      const href = cleanPart.includes("@") && !cleanPart.startsWith("http")
+        ? `mailto:${cleanPart}`
+        : cleanPart;
+      return (
+        <span key={index}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 break-all hover:opacity-80"
+          >
+            {cleanPart}
+          </a>
+          {trailing}
+        </span>
+      );
+    });
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "¡Hola! Soy el asistente de Daniel. Puedo responder preguntas sobre su experiencia, proyectos, habilidades y más. ¿Qué deseas saber?",
-      sender: "bot",
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
-  const requestCountRef = useRef(0);
-  const lastResetRef = useRef(Date.now());
-  const responsesCacheRef = useRef(new Map());
-
-  const MAX_REQUESTS_PER_DAY = 100;
-  const MAX_REQUESTS_PER_HOUR = 15;
-  const MAX_MESSAGES_IN_CONTEXT = 5;
-  const MAX_MESSAGE_LENGTH = 300;
-  const CACHE_DURATION_MS = 1000 * 60 * 60;
-  const MIN_DELAY_BETWEEN_REQUESTS_MS = 2000;
-
-  const dailyCountRef = useRef(0);
-  const lastRequestTimeRef = useRef(0);
-  const dailyResetRef = useRef(Date.now());
-
-  const portfolioContext = `Eres un asistente virtual del portfolio de Daniel Sánchez Vázquez.
-
-REGLAS IMPORTANTES:
-- En conversaciones normales, refiere al propietario como "Daniel" (solo nombre)
-- SOLO usa "Daniel Sánchez Vázquez" (nombre completo) cuando te presentes o cuando se te pregunta explícitamente quién es
-- Sé amable, profesional y conciso
-- Limita respuestas a máximo 100 palabras
-
-INFORMACIÓN SOBRE DANIEL:
-
-Carrera Profesional:
-Daniel es un Full-stack developer, más enfocado al front, con experiencia en:
-- Frontend: React, JavaScript, TypeScript, TailwindCSS, HTML, CSS, Next.js
-- Backend: Spring Boot, Java, Node.js, PostgreSQL, MongoDB
-- Tools: Git, GitHub, Figma, Cursor, Vite
-
-Proyectos destacados:
-1. Pawtopia - Plataforma de adopción responsable (HTML, CSS, JS, TailwindCSS)
-2. EcoVibe - Web de sostenibilidad (HTML, CSS, JS, Bootstrap)
-3. AppFluence - Página de podcast con reproductor (HTML, CSS, JS, Spotify API)
-
-Intereses Personales:
-- Futbol: Es una pasión en su vida, juega regularmente y le encanta el futbol
-- Boxeo: Practica boxeo como parte de su rutina de ejercicio
-- Música: La música es esencial en su día a día, siempre la tiene presente
-
-Contacto: danielsanchezvazquez5@gmail.com
-GitHub: https://github.com/DaniSanchezDev
-LinkedIn: https://linkedin.com/in/danielsanchezdev`;
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages, isLoading, error]);
 
-  const getCachedResponse = (userInput) => {
-    const cached = responsesCacheRef.current.get(userInput.toLowerCase());
-    if (cached && Date.now() - cached.timestamp < CACHE_DURATION_MS) {
-      return cached.response;
-    }
-    return null;
-  };
+  useEffect(() => {
+    if (!isOpen) return;
 
-  const setCachedResponse = (userInput, response) => {
-    responsesCacheRef.current.set(userInput.toLowerCase(), {
-      response,
-      timestamp: Date.now(),
-    });
-  };
-
-  const checkRateLimit = () => {
-    const now = Date.now();
-    const hourInMs = 60 * 60 * 1000;
-    const dayInMs = 24 * 60 * 60 * 1000;
-
-    if (now - lastResetRef.current > hourInMs) {
-      requestCountRef.current = 0;
-      lastResetRef.current = now;
-    }
-
-    if (now - dailyResetRef.current > dayInMs) {
-      dailyCountRef.current = 0;
-      dailyResetRef.current = now;
-    }
-
-    if (requestCountRef.current >= MAX_REQUESTS_PER_HOUR) {
-      return {
-        allowed: false,
-        reason: `Límite de ${MAX_REQUESTS_PER_HOUR} mensajes por hora alcanzado.`,
-      };
-    }
-
-    if (dailyCountRef.current >= MAX_REQUESTS_PER_DAY) {
-      return {
-        allowed: false,
-        reason: `Límite diario de ${MAX_REQUESTS_PER_DAY} mensajes alcanzado.`,
-      };
-    }
-
-    if (now - lastRequestTimeRef.current < MIN_DELAY_BETWEEN_REQUESTS_MS) {
-      return {
-        allowed: false,
-        reason: "Espera un momento antes de enviar otro mensaje.",
-      };
-    }
-
-    requestCountRef.current++;
-    dailyCountRef.current++;
-    lastRequestTimeRef.current = now;
-    return { allowed: true };
-  };
-
-  const getContextMessages = () => {
-    const recentMessages = messages.slice(-MAX_MESSAGES_IN_CONTEXT);
-    return recentMessages
-      .map(
-        (msg) =>
-          `${msg.sender === "user" ? "Usuario" : "Asistente"}: ${msg.text}`,
-      )
-      .join("\n");
-  };
-
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    if (input.length > MAX_MESSAGE_LENGTH) {
-      setError(
-        `El mensaje es demasiado largo (máximo ${MAX_MESSAGE_LENGTH} caracteres)`,
-      );
-      setTimeout(() => setError(""), 3000);
-      return;
-    }
-
-    const rateLimitCheck = checkRateLimit();
-    if (!rateLimitCheck.allowed) {
-      setError(rateLimitCheck.reason);
-      setTimeout(() => setError(""), 5000);
-      return;
-    }
-
-    const userMessage = {
-      id: messages.length + 1,
-      text: input,
-      sender: "user",
-      timestamp: new Date(),
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setIsOpen(false);
     };
+    window.addEventListener("keydown", handleKeyDown);
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+    // En móvil el chat ocupa toda la pantalla: bloqueamos el scroll de fondo.
+    const isMobile = window.matchMedia("(max-width: 639px)").matches;
+    if (isMobile) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      // En escritorio enfocamos el input; en móvil no, para no abrir el teclado.
+      inputRef.current?.focus();
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.documentElement.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const requestReply = async (history) => {
     setIsLoading(true);
-    setError("");
+    setError(null);
 
     try {
-      const cachedResponse = getCachedResponse(input);
-      if (cachedResponse) {
-        const botMessage = {
-          id: messages.length + 2,
-          text: `${cachedResponse} (respuesta en caché)`,
-          sender: "bot",
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, botMessage]);
-        setIsLoading(false);
-        return;
-      }
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: history
+            .filter((message) => message.id !== WELCOME_MESSAGE.id)
+            .slice(-MAX_HISTORY_SENT)
+            .map(({ role, content }) => ({ role, content })),
+        }),
+      });
 
-      const apiKey = import.meta.env.VITE_GROQ_API_KEY;
-
-      if (!apiKey) {
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.reply) {
         throw new Error(
-          "API key no configurada. Configura VITE_GROQ_API_KEY en .env",
+          data.error || "No he podido responder. Inténtalo de nuevo.",
         );
       }
 
-      const contextMessages = getContextMessages();
-      const systemPrompt = `${portfolioContext}\n\nHistorial de conversación:\n${contextMessages}`;
-
-      const response = await fetch(
-        "https://api.groq.com/openai/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",
-            messages: [
-              {
-                role: "system",
-                content: systemPrompt,
-              },
-              {
-                role: "user",
-                content: input,
-              },
-            ],
-            max_tokens: 200,
-            temperature: 0.7,
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || "Error en la API de Groq");
-      }
-
-      const data = await response.json();
-      const botResponse = data.choices[0].message.content;
-
-      setCachedResponse(input, botResponse);
-
-      const botMessage = {
-        id: messages.length + 2,
-        text: botResponse,
-        sender: "bot",
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
+      setMessages((prev) => [...prev, createMessage("assistant", data.reply)]);
     } catch (err) {
-      console.error("Error:", err);
-      setError(err.message || "Error al conectar con la IA. Intenta de nuevo.");
-
-      const errorMessage = {
-        id: messages.length + 2,
-        text: `Error: ${err.message}`,
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setError(
+        err instanceof TypeError
+          ? "Sin conexión. Revisa tu red e inténtalo de nuevo."
+          : err.message,
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
+  const sendMessage = (text) => {
+    const content = text.trim().slice(0, MAX_MESSAGE_LENGTH);
+    if (!content || isLoading) return;
+
+    const history = [...messages, createMessage("user", content)];
+    setMessages(history);
+    setInput("");
+    requestReply(history);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    sendMessage(input);
+  };
+
+  const showSuggestions = messages.length === 1 && !isLoading;
+
   return (
     <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 bg-linear-to-r from-blue-500 to-purple-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110"
-        style={{ zIndex: 150 }}
-        aria-label="Abrir chat"
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className={cn(
+          "fixed z-[230] bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 sm:right-6 sm:bottom-6",
+          "flex items-center justify-center h-14 w-14 rounded-full",
+          "bg-primary text-primary-foreground shadow-lg shadow-primary/30",
+          "hover:scale-105 hover:shadow-xl transition-all duration-300",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          isOpen && "max-sm:hidden",
+        )}
+        aria-label={isOpen ? "Cerrar chat" : "Abrir chat con el asistente"}
+        aria-expanded={isOpen}
+        aria-controls="chatbot-panel"
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
 
       {isOpen && (
         <div
-          className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-900 rounded-lg shadow-2xl flex flex-col h-[600px] border border-gray-200 dark:border-gray-700"
-          style={{ zIndex: 150 }}
+          id="chatbot-panel"
+          role="dialog"
+          aria-label="Asistente de Daniel"
+          data-lenis-prevent
+          className={cn(
+            "fixed z-[230] flex flex-col overflow-hidden bg-card text-foreground",
+            "animate-fade-in",
+            // Móvil: pantalla completa, respetando notch y barra inferior.
+            "inset-0 h-dvh pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
+            // Tablet y escritorio: ventana flotante.
+            "sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] sm:h-[min(600px,calc(100dvh-11rem))] sm:p-0",
+            "sm:rounded-2xl sm:border sm:border-border sm:shadow-2xl",
+          )}
         >
-          <div className="bg-linear-to-r from-blue-500 to-purple-600 text-white p-4 rounded-t-lg">
-            <h3 className="font-bold text-lg">Asistente Daniel</h3>
-            <p className="text-sm opacity-90">
-              Pregunta sobre mi experiencia y proyectos
-            </p>
-          </div>
+          <header className="flex items-center gap-3 px-4 py-3 border-b border-border">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+              <Sparkles size={20} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold leading-tight">Asistente de Daniel</h3>
+              <p className="text-xs text-muted-foreground truncate">
+                Pregunta sobre su experiencia y proyectos
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="p-2 -mr-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-colors"
+              aria-label="Cerrar chat"
+            >
+              <X size={20} />
+            </button>
+          </header>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div
+            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-3"
+            aria-live="polite"
+          >
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                className={cn(
+                  "flex",
+                  message.role === "user" ? "justify-end" : "justify-start",
+                )}
               >
                 <div
-                  className={`max-w-xs px-4 py-2 rounded-lg ${
-                    message.sender === "user"
-                      ? "bg-blue-500 text-white rounded-br-none"
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"
-                  }`}
+                  className={cn(
+                    "max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words",
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-md"
+                      : "bg-foreground/[0.06] text-foreground rounded-bl-md",
+                  )}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  {message.role === "assistant"
+                    ? renderMessageContent(message.content)
+                    : message.content}
                 </div>
               </div>
             ))}
+
+            {showSuggestions && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {SUGGESTIONS.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => sendMessage(suggestion)}
+                    className="px-3 py-1.5 text-xs rounded-full border border-primary/40 text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg rounded-bl-none">
-                  <div className="flex space-x-2">
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
-                  </div>
+              <div className="flex justify-start" aria-label="El asistente está escribiendo">
+                <div className="flex gap-1.5 px-4 py-3.5 rounded-2xl rounded-bl-md bg-foreground/[0.06]">
+                  {[0, 150, 300].map((delay) => (
+                    <span
+                      key={delay}
+                      className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce"
+                      style={{ animationDelay: `${delay}ms` }}
+                    />
+                  ))}
                 </div>
               </div>
             )}
+
             {error && (
-              <div className="flex justify-start">
-                <div className="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 px-4 py-2 rounded-lg text-sm">
+              <div className="flex flex-col items-start gap-2">
+                <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-bl-md text-sm bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">
                   {error}
                 </div>
+                <button
+                  type="button"
+                  onClick={() => requestReply(messages)}
+                  className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <RotateCcw size={14} /> Reintentar
+                </button>
               </div>
             )}
+
             <div ref={messagesEndRef} />
           </div>
 
           <form
-            onSubmit={handleSendMessage}
-            className="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900 rounded-b-lg"
+            onSubmit={handleSubmit}
+            className="border-t border-border p-3"
           >
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <input
+                ref={inputRef}
                 type="text"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(event) => setInput(event.target.value)}
                 placeholder="Escribe tu pregunta..."
                 maxLength={MAX_MESSAGE_LENGTH}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white text-sm"
-                disabled={isLoading}
+                enterKeyHint="send"
+                aria-label="Mensaje para el asistente"
+                // 16px en móvil evita que iOS haga zoom al enfocar el input.
+                className="min-w-0 flex-1 h-11 px-4 rounded-full bg-background border border-border text-base sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/60"
               />
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white rounded-lg p-2 transition-colors"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+                aria-label="Enviar mensaje"
               >
-                <Send size={20} />
+                <Send size={18} />
               </button>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              {input.length}/{MAX_MESSAGE_LENGTH}
-            </p>
+            {input.length > MAX_MESSAGE_LENGTH * 0.8 && (
+              <p className="mt-1.5 px-4 text-xs text-muted-foreground">
+                {input.length}/{MAX_MESSAGE_LENGTH}
+              </p>
+            )}
           </form>
         </div>
       )}
