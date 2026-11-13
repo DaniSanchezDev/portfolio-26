@@ -2,6 +2,16 @@ import { ArrowRight, ExternalLink, Github } from "lucide-react";
 
 const projects = [
   {
+    id: 5,
+    name: "Trainly",
+    description:
+      "Trainly es una web app para el seguimiento de entrenamientos de gimnasio: permite crear rutinas, registrar series, buscar ejercicios, visualizar progreso con gráficos y funciona como PWA. Desarrollada con Next.js, Tailwind CSS, Supabase y Recharts.",
+    image: "/projects/Miniatura-Trainly.png",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Supabase"],
+    url: "https://trainly-bay.vercel.app/",
+    github: "https://github.com/DaniSanchezDev/Trainly",
+  },
+  {
     id: 1,
     name: "Hebi Academy",
     description:
@@ -54,7 +64,7 @@ const Projects = () => {
           Aquí podrás encontrar algunos de los proyectos en los que he
           trabajado, tanto individualmente como en equipo.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <div
               key={project.id}
